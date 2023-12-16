@@ -1,6 +1,7 @@
 package com.example.layeredarchitecture.controller;
 
-import com.example.layeredarchitecture.Dao.ManageCustomerDao;
+import com.example.layeredarchitecture.Dao.CustomerDao;
+import com.example.layeredarchitecture.Dao.ManageCustomerDaoImp;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.CustomerDTO;
 import com.example.layeredarchitecture.view.tdm.CustomerTM;
@@ -73,11 +74,11 @@ public class ManageCustomersFormController {
             Statement stm = connection.createStatement();
             ResultSet rst = stm.executeQuery("SELECT * FROM Customer");
 */
-           ManageCustomerDao ManageCustomerDao=new ManageCustomerDao();
+            CustomerDao ManageCustomerDao=new ManageCustomerDaoImp();
            ArrayList<CustomerDTO> allCustomer = ManageCustomerDao.getAllCustomer();
 
             for (CustomerDTO dto:allCustomer) {
-        tblCustomers.getItems().add(
+            tblCustomers.getItems().add(
                 new CustomerTM(
                         dto.getId(),
                         dto.getName(),
@@ -160,7 +161,7 @@ public class ManageCustomersFormController {
                 pstm.setString(2, name);
                 pstm.setString(3, address);
                 pstm.executeUpdate();*/
-                ManageCustomerDao customerDAO = new ManageCustomerDao();
+                CustomerDao customerDAO = new ManageCustomerDaoImp();
                 boolean isSaved = customerDAO.saveCustomer(new CustomerDTO(id, name, address));
 
                 if (isSaved) {
@@ -188,7 +189,7 @@ public class ManageCustomersFormController {
                 pstm.setString(3, id);
                 pstm.executeUpdate();*/
                 CustomerDTO dto = new CustomerDTO(id,name,address);
-                ManageCustomerDao dao = new ManageCustomerDao();
+                CustomerDao dao = new ManageCustomerDaoImp();
                 dao.updateCustomer(dto);
             } catch (SQLException e) {
                 new Alert(Alert.AlertType.ERROR, "Failed to update the customer " + id + e.getMessage()).show();
@@ -205,14 +206,13 @@ public class ManageCustomersFormController {
         btnAddNewCustomer.fire();
     }
 
-
     boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
        /* Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("SELECT id FROM Customer WHERE id=?");
         pstm.setString(1, id);
         return pstm.executeQuery().next();*/
 
-        ManageCustomerDao dao = new ManageCustomerDao();
+        CustomerDao dao = new ManageCustomerDaoImp();
         boolean isExist = dao.existcustomer(id);
         if (isExist){
             return true;
@@ -232,14 +232,14 @@ public class ManageCustomersFormController {
             PreparedStatement pstm = connection.prepareStatement("DELETE FROM Customer WHERE id=?");
             pstm.setString(1, id);
             pstm.executeUpdate();*/
-            ManageCustomerDao dao = new ManageCustomerDao();
+            CustomerDao dao = new ManageCustomerDaoImp();
             boolean isDeleted = dao.deletecustomer(id);
             if (isDeleted) {
 
 
-                tblCustomers.getItems().remove(tblCustomers.getSelectionModel().getSelectedItem());
-                tblCustomers.getSelectionModel().clearSelection();
-                initUI();
+            tblCustomers.getItems().remove(tblCustomers.getSelectionModel().getSelectedItem());
+            tblCustomers.getSelectionModel().clearSelection();
+            initUI();
             }
 
         } catch (SQLException e) {
@@ -251,14 +251,10 @@ public class ManageCustomersFormController {
 
     private String generateNewId() {
         try {
-            /*Connection connection = DBConnection.getDbConnection().getConnection();
-            ResultSet rst = connection.createStatement().executeQuery("SELECT id FROM Customer ORDER BY id DESC LIMIT 1;");*/
-
-            ManageCustomerDao ManageCustomerDao = new ManageCustomerDao();
-            ResultSet resultSet = ManageCustomerDao.generateNewId();
-
-            if (resultSet.next()) {
-                String id = resultSet.getString("id");
+            Connection connection = DBConnection.getDbConnection().getConnection();
+            ResultSet rst = connection.createStatement().executeQuery("SELECT id FROM Customer ORDER BY id DESC LIMIT 1;");
+            if (rst.next()) {
+                String id = rst.getString("id");
                 int newCustomerId = Integer.parseInt(id.replace("C00-", "")) + 1;
                 return String.format("C00-%03d", newCustomerId);
             } else {
@@ -270,6 +266,7 @@ public class ManageCustomersFormController {
             e.printStackTrace();
         }
 
+
         if (tblCustomers.getItems().isEmpty()) {
             return "C00-001";
         } else {
@@ -279,6 +276,7 @@ public class ManageCustomersFormController {
         }
 
     }
+
     private String getLastCustomerId() {
         List<CustomerTM> tempCustomersList = new ArrayList<>(tblCustomers.getItems());
         Collections.sort(tempCustomersList);
