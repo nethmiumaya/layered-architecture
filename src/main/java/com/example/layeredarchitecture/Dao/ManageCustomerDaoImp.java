@@ -65,4 +65,13 @@ public boolean updateCustomer(CustomerDTO dto)throws SQLException,ClassNotFoundE
         ResultSet rst = connection.createStatement().executeQuery("SELECT id FROM Customer ORDER BY id DESC LIMIT 1;");
         return rst;
     }
+    @Override
+    public CustomerDTO searchCustomer(String id) throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getDbConnection().getConnection();
+        PreparedStatement pstm = connection.prepareStatement("SELECT * FROM Customer WHERE id=?");
+        pstm.setString(1, id + "");
+        ResultSet rst = pstm.executeQuery();
+        rst.next();
+        return new CustomerDTO(id + "", rst.getString("name"), rst.getString("address"));
+    }
 }

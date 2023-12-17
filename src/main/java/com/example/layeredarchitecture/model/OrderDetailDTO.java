@@ -9,6 +9,7 @@ public class OrderDetailDTO implements Serializable {
     private String itemCode;
     private int qty;
     private BigDecimal unitPrice;
+    private String oid;
 
     public OrderDetailDTO() {
     }
@@ -18,6 +19,21 @@ public class OrderDetailDTO implements Serializable {
         this.qty = qty;
         this.unitPrice = unitPrice;
     }
+    public OrderDetailDTO(String oid, String itemCode, int qty, BigDecimal unitPrice) {
+        this.oid = oid;
+        this.itemCode = itemCode;
+        this.qty = qty;
+        this.unitPrice = unitPrice;
+    }
+
+    public String getOid() {
+        return oid;
+    }
+
+    public void setOid(String oid) {
+        this.oid = oid;
+    }
+
 
     public String getItemCode() {
         return itemCode;

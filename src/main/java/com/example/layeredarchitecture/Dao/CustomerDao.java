@@ -10,8 +10,9 @@ public interface CustomerDao {
     public boolean saveCustomer(CustomerDTO dto) throws SQLException, ClassNotFoundException;
     public boolean updateCustomer(CustomerDTO dto)throws SQLException,ClassNotFoundException;
 
-    public boolean existcustomer(String id)throws SQLException,ClassNotFoundException;
+    boolean existcustomer(String id)throws SQLException,ClassNotFoundException;
 
     public boolean deletecustomer(String id)throws SQLException,ClassNotFoundException;
     public ResultSet generateNewId() throws SQLException, ClassNotFoundException;
+    public CustomerDTO searchCustomer(String id) throws SQLException, ClassNotFoundException;
 }
