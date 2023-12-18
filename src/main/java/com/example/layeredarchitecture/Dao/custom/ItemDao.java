@@ -1,12 +1,9 @@
-package com.example.layeredarchitecture.Dao;
+package com.example.layeredarchitecture.Dao.custom;
 
 
 import com.example.layeredarchitecture.model.ItemDTO;
 
-import java.sql.*;
-import java.util.ArrayList;
-
-public interface ItemDao extends CRUDDao<ItemDTO>{
+public interface ItemDao extends CRUDDao<ItemDTO> {
     /*public boolean saveitem(ItemDTO dto) throws SQLException, ClassNotFoundException ;
 
     boolean save(ItemDTO dto) throws SQLException, ClassNotFoundException;

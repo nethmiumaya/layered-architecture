@@ -1,12 +1,10 @@
 package com.example.layeredarchitecture.controller;
 
 import com.example.layeredarchitecture.Dao.ItemDao;
-import com.example.layeredarchitecture.Dao.ItemDaoImp;
+import com.example.layeredarchitecture.Dao.customeImp.ItemDaoImp;
 
 import com.example.layeredarchitecture.db.DBConnection;
-import com.example.layeredarchitecture.model.CustomerDTO;
 import com.example.layeredarchitecture.model.ItemDTO;
-import com.example.layeredarchitecture.view.tdm.CustomerTM;
 import com.example.layeredarchitecture.view.tdm.ItemTM;
 import com.jfoenix.controls.JFXButton;
 import javafx.application.Platform;
@@ -80,7 +78,7 @@ public class ManageItemsFormController {
             ResultSet rst = stm.executeQuery("SELECT * FROM Item");
 */
             ItemDao itemDAO = new ItemDaoImp();
-            ArrayList<ItemDTO> allItem = itemDAO.getAllItem();
+            ArrayList<ItemDTO> allItem = itemDAO.getAll();
             for (ItemDTO dto : allItem) {
                 tblItems.getItems().add(
                         new ItemTM(
@@ -202,7 +200,7 @@ public class ManageItemsFormController {
                 tblItems.getItems().add(new ItemTM(code, description, unitPrice, qtyOnHand));
 */
                 ItemDao itemdae = new ItemDaoImp();
-                boolean isSaved = itemdae.saveitem(new ItemDTO(code,description,unitPrice,qtyOnHand));
+                boolean isSaved = itemdae.save(new ItemDTO(code,description,unitPrice,qtyOnHand));
                 if (isSaved) {
                     tblItems.getItems().add(new ItemTM(code,description,unitPrice,qtyOnHand));
                 }
@@ -227,7 +225,7 @@ public class ManageItemsFormController {
                 pstm.executeUpdate();
 */
                 ItemDao impl = new ItemDaoImp();
-                impl.updateItem(new ItemDTO(code,description,unitPrice,qtyOnHand));
+                impl.update(new ItemDTO(code,description,unitPrice,qtyOnHand));
 
                 ItemTM selectedItem = tblItems.getSelectionModel().getSelectedItem();
                 selectedItem.setDescription(description);
@@ -251,7 +249,7 @@ public class ManageItemsFormController {
         pstm.setString(1, code);
         return pstm.executeQuery().next();*/
         ItemDao itemDAO =new ItemDaoImp();
-        return itemDAO.existItem(code);
+        return itemDAO.exist(code);
 
     }
 

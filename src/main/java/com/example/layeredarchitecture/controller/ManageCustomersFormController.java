@@ -1,7 +1,7 @@
 package com.example.layeredarchitecture.controller;
 
 import com.example.layeredarchitecture.Dao.CustomerDao;
-import com.example.layeredarchitecture.Dao.ManageCustomerDaoImp;
+import com.example.layeredarchitecture.Dao.customeImp.ManageCustomerDaoImp;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.CustomerDTO;
 import com.example.layeredarchitecture.view.tdm.CustomerTM;
@@ -75,7 +75,7 @@ public class ManageCustomersFormController {
             ResultSet rst = stm.executeQuery("SELECT * FROM Customer");
 */
             CustomerDao ManageCustomerDao=new ManageCustomerDaoImp();
-           ArrayList<CustomerDTO> allCustomer = ManageCustomerDao.getAllCustomer();
+           ArrayList<CustomerDTO> allCustomer = ManageCustomerDao.getAll();
 
             for (CustomerDTO dto:allCustomer) {
             tblCustomers.getItems().add(
@@ -162,7 +162,7 @@ public class ManageCustomersFormController {
                 pstm.setString(3, address);
                 pstm.executeUpdate();*/
                 CustomerDao customerDAO = new ManageCustomerDaoImp();
-                boolean isSaved = customerDAO.saveCustomer(new CustomerDTO(id, name, address));
+                boolean isSaved = customerDAO.save(new CustomerDTO(id, name, address));
 
                 if (isSaved) {
                     tblCustomers.getItems().add(new CustomerTM(id, name, address));
@@ -190,7 +190,7 @@ public class ManageCustomersFormController {
                 pstm.executeUpdate();*/
                 CustomerDTO dto = new CustomerDTO(id,name,address);
                 CustomerDao dao = new ManageCustomerDaoImp();
-                dao.updateCustomer(dto);
+                dao.update(dto);
             } catch (SQLException e) {
                 new Alert(Alert.AlertType.ERROR, "Failed to update the customer " + id + e.getMessage()).show();
             } catch (ClassNotFoundException e) {
@@ -213,7 +213,7 @@ public class ManageCustomersFormController {
         return pstm.executeQuery().next();*/
 
         CustomerDao dao = new ManageCustomerDaoImp();
-        boolean isExist = dao.existcustomer(id);
+        boolean isExist = dao.exist(id);
         if (isExist){
             return true;
         }
@@ -233,7 +233,7 @@ public class ManageCustomersFormController {
             pstm.setString(1, id);
             pstm.executeUpdate();*/
             CustomerDao dao = new ManageCustomerDaoImp();
-            boolean isDeleted = dao.deletecustomer(id);
+            boolean isDeleted = dao.delete(id);
             if (isDeleted) {
 
 
