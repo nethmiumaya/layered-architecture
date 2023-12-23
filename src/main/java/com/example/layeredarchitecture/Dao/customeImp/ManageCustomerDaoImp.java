@@ -65,7 +65,7 @@ public boolean update(CustomerDTO dto)throws SQLException,ClassNotFoundException
         pstm.setString(1, id);
         boolean isDeleted = pstm.executeUpdate()>0;
         return isDeleted;*/
-    return SQLUtil.execute("DELETE FROM Customer WHERE id=?",id);
+   return SQLUtil.execute("DELETE FROM Customer WHERE id=?",id);
     }
     @Override
     public String generateID() throws SQLException, ClassNotFoundException {

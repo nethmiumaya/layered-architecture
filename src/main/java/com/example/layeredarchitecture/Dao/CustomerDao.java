@@ -2,9 +2,6 @@ package com.example.layeredarchitecture.Dao;
 
 import com.example.layeredarchitecture.model.CustomerDTO;
 
-import java.sql.*;
-import java.util.ArrayList;
-
 public interface CustomerDao extends CRUDDao<CustomerDTO> {
  /*   boolean saveCustomer(CustomerDTO dto) throws SQLException, ClassNotFoundException;
 

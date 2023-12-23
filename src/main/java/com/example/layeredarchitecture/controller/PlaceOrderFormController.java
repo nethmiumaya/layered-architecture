@@ -227,7 +227,7 @@ public class PlaceOrderFormController {
             ResultSet rst = stm.executeQuery("SELECT oid FROM `Orders` ORDER BY oid DESC LIMIT 1;");
 
             return rst.next() ? String.format("OID-%03d", (Integer.parseInt(rst.getString("oid").replace("OID-", "")) + 1)) : "OID-001";*/
-            return orderDAO.generateOID();
+            return orderDAO.generateID();
         } catch (SQLException e) {
             System.out.println(e);
             new Alert(Alert.AlertType.ERROR, "Failed to generate a new order id").show();
@@ -373,7 +373,7 @@ public class PlaceOrderFormController {
             /*if order id already exist*/
             //  if (stm.executeQuery().next()) {
             connection = DBConnection.getDbConnection().getConnection();
-            boolean b1 = orderDAO.existOrder(orderId);
+            boolean b1 = orderDAO.exist(orderId);
             /*if order id already exist*/
             if (b1) {
                 return false;
@@ -388,7 +388,7 @@ public class PlaceOrderFormController {
             stm.setString(3, customerId);*/
 
            // if (stm.executeUpdate() != 1) {
-            boolean b2 = orderDAO.saveOrder(new OrderDTO(orderId, orderDate, customerId));
+            boolean b2 = orderDAO.save(new OrderDTO(orderId, orderDate, customerId));
 
             if (!b2) {
                 connection.rollback();
